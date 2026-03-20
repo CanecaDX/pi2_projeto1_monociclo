@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #define MEM_SIZE 256
 
@@ -7,6 +8,7 @@ uint16_t *get_mem_file(char *mem_name, int *size);
 
 int main(){
 	int op;
+	int num_instructions = 0;
 	
 	do{
 		printf("\n------------------------------------");
@@ -34,7 +36,17 @@ int main(){
 			printf("\nconstruindo");
 			break;
 			case 2:
-			printf("\nconstruindo");
+			
+			uint16_t *instructions = get_mem_file("instructions.mem", &num_instructions);
+					
+			if (instructions == NULL) {
+				fprintf(stderr, "Falha ao carregar arquivo\n");
+					return 1;
+				}
+					
+				printf("\nCarregadas %d instruções\n", num_instructions);
+				free(instructions);
+			
 			break;
 			case 3:
 			printf("\nconstruindo");
@@ -67,3 +79,41 @@ int main(){
 	}while(op != 0);
 	return 0;
 }
+
+uint16_t *get_mem_file(char *mem_name, int *size) {
+    FILE *file = fopen(mem_name, "rb");
+    if (file == NULL) {
+        perror("Erro ao abrir arquivo .mem");
+        return NULL;
+    }
+    
+    // Obter tamanho do arquivo
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    rewind(file);
+    printf("%li", file_size);
+    
+    // Alocar memória para as instruções (uint16_t = 2 bytes)
+    uint16_t *instructions = (uint16_t *)malloc(file_size);
+    if (instructions == NULL) {
+        perror("Erro ao alocar memória");
+        fclose(file);
+        return NULL;
+    }
+    printf("\nMemória alocada.");
+    
+    // Ler arquivo
+    size_t bytes_read = fread(instructions, 1, file_size, file);
+    if (bytes_read != file_size) {
+        perror("Erro ao ler arquivo");
+        free(instructions);
+        fclose(file);
+        return NULL;
+    }
+    
+    *size = file_size / sizeof(uint16_t);  // Converter bytes em quantidade de uint16_t
+    fclose(file); 	 	
+    
+    return instructions;
+}
+
