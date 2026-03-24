@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-
 #define MEM_SIZE 256
 
 uint16_t *get_mem_file(char *mem_name, int *size);
+void print_binary(uint16_t value);
+void print_instruction_memory(uint16_t *instructions, int size);
 
 int main(){
+	
 	int op;
 	int num_instructions = 0;
+	uint16_t *instructions = NULL;
 	
 	do{
 		printf("\n------------------------------------");
@@ -30,29 +33,27 @@ int main(){
 		
 		switch(op){
 			case 0: 
-			printf("\nEncerrando simulador..");
+				printf("\nEncerrando simulador..");
+				free(instructions);
 			break;
 			case 1:
 			printf("\nconstruindo");
 			break;
 			case 2:
-			
-			uint16_t *instructions = get_mem_file("instructions.mem", &num_instructions);
-					
-			if (instructions == NULL) {
-				fprintf(stderr, "Falha ao carregar arquivo\n");
-					return 1;
+				uint16_t *instructions = get_mem_file("instructions.mem", &num_instructions);		
+				if (instructions == NULL) {
+					fprintf(stderr, "Falha ao carregar arquivo\n");
+						return 1;
 				}
 					
-				printf("\nCarregadas %d instruções\n", num_instructions);
-				free(instructions);
-			
+				printf("\nCarregadas %d instruções\n", num_instructions);				
 			break;
 			case 3:
 			printf("\nconstruindo");
 			break;
 			case 4:
-			printf("\nconstruindo");
+				printf("\nMostrando instruções carregadas: ");
+				print_instruction_memory(instructions, num_instructions);
 			break;
 			case 5:
 			printf("\nconstruindo");
@@ -87,11 +88,10 @@ uint16_t *get_mem_file(char *mem_name, int *size) {
         return NULL;
     }
     
-    // Obter tamanho do arquivo
+    // Obter tamanho do arquivo (o ponteiro ira apontar para o final do arquivo e o valor sera armazenado no váriavel file_size)
     fseek(file, 0, SEEK_END);
     long file_size = ftell(file);
     rewind(file);
-    printf("%li", file_size);
     
     // Alocar memória para as instruções (uint16_t = 2 bytes)
     uint16_t *instructions = (uint16_t *)malloc(file_size);
@@ -116,4 +116,25 @@ uint16_t *get_mem_file(char *mem_name, int *size) {
     
     return instructions;
 }
+
+void print_instruction_memory(uint16_t *instructions, int size){
+
+    printf("\nMemória de instruções:\n");
+
+    for(int i = 0; i < size; i++)
+    {
+        printf("Instr[%d] = ", i);
+        print_binary(instructions[i]);
+        printf("\n");
+    }
+}
+
+void print_binary(uint16_t value){
+
+    for(int i = 15; i >= 0; i--)
+        printf("%d", (value >> i) & 1);
+        
+}
+
+
 
