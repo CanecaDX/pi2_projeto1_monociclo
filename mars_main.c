@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <ctype.h>
 #define MEM_SIZE 256
 
 uint16_t *get_mem_file(char *mem_name, int *size);
@@ -40,7 +41,7 @@ int main(){
 			printf("\nconstruindo");
 			break;
 			case 2:
-				uint16_t *instructions = get_mem_file("instructions.mem", &num_instructions);		
+				instructions = get_mem_file("instructions.mem", &num_instructions);		
 				if (instructions == NULL) {
 					fprintf(stderr, "Falha ao carregar arquivo\n");
 						return 1;
@@ -82,11 +83,61 @@ int main(){
 }
 
 uint16_t *get_mem_file(char *mem_name, int *size) {
+	
+	char line[32];
+    int is_binary = 1, i;
+    
     FILE *file = fopen(mem_name, "rb");
     if (file == NULL) {
         perror("Erro ao abrir arquivo .mem");
         return NULL;
     }
+
+    if(fgets(line, sizeof(line), file) != NULL){
+
+        for(i = 0; line[i] != '\0'; i++){
+
+            if(line[i] == '\n')
+                continue;
+
+            if(line[i] != '0' && line[i] != '1'){
+                is_binary = 0;
+                break;
+            }
+        }
+
+        rewind(file);
+
+        if(is_binary){
+
+            uint16_t *instructions = malloc(MEM_SIZE * sizeof(uint16_t));
+
+            if(instructions == NULL){
+                perror("Erro ao alocar memória");
+                fclose(file);
+                return NULL;
+            }
+
+            int count = 0;
+
+            while(fgets(line, sizeof(line), file) != NULL){
+
+                instructions[count] = (uint16_t)strtol(line, NULL, 2);
+
+                count++;
+            }
+
+            *size = count;
+
+            fclose(file);
+
+            printf("Arquivo texto binário detectado\n");
+
+            return instructions;
+        }
+    }
+    
+//SE NÃO ENCONTRA TEXTO PULA PRA CA
     
     // Obter tamanho do arquivo (o ponteiro ira apontar para o final do arquivo e o valor sera armazenado no váriavel file_size)
     fseek(file, 0, SEEK_END);
@@ -94,7 +145,7 @@ uint16_t *get_mem_file(char *mem_name, int *size) {
     rewind(file);
     
     // Alocar memória para as instruções (uint16_t = 2 bytes)
-    uint16_t *instructions = (uint16_t *)malloc(file_size);
+    uint16_t *instructions = (uint16_t *)malloc(MEM_SIZE);
     if (instructions == NULL) {
         perror("Erro ao alocar memória");
         fclose(file);
