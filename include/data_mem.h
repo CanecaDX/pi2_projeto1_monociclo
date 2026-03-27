@@ -6,7 +6,7 @@
 #define Tam_Memoria 256
 
 typedef struct {
-	int16_t valor;
+	int8_t valor;
 } Memoria_D;
 
 Memoria_D *inicializa_memoria_dados(void);
