@@ -7,3 +7,9 @@ gcc -Wall -Wextra -Wpedantic -std=c11 -I .\include .\mars_main.c .\src\*.c -o .\
 para testar no windows:
 ./mars_c.exe
 
+Para compilar no linux:
+gcc main.c src/*.c -Iinclude -Wall -Wextra -o main_c
+
+para testar no linux:
+./main_c
+
