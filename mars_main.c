@@ -1,23 +1,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "registers.h"
-#include "instruction_mem.h"
 #include "decoder.h"
-#include "data_mem.h"
-#include "run.h"
+#include "monociclo.h"
 
+    
 int main(){
     int op;
-    //inicializa regs, memória de instruções e de dados
-    uint16_t *regs = init_regs();
-    uint16_t *program_mem = NULL;
-    //serve para saber o tamanho do programa carregado, atuaiza a cada carga
-    int program_mem_size = 0;
-    Memoria_D *data_mem = inicializa_memoria_dados();
-    if (!data_mem) {
-        printf("\nFalha ao alocar memoria de dados.");
-        free(regs);
+    Monociclo *m = monociclo_create();
+    if (!m) {
+        printf("\nFalha ao alocar monociclo.");
         return 1;
     }
 
@@ -45,29 +37,31 @@ int main(){
                 char data_name[128];
                 printf("\nInforme o arquivo .dat: ");
                 scanf("%127s", data_name);
-                Carregar_memoria_dados(data_mem, data_name);
+                data_memory_load(m->mem_data, data_name);
                 break;
             }
             case 2: {
                 char mem_name[128];
                 printf("\nInforme o arquivo .mem: ");
                 scanf("%127s", mem_name);
-                free(program_mem);
-                program_mem = get_mem_file(mem_name, &program_mem_size); 
+                Memoria_instrucao *new_mem = instruction_memory_load_file(mem_name);
+                if (new_mem) {
+                    if (m->mem_inst) {
+                        free(m->mem_inst->instrucao);
+                        free(m->mem_inst);
+                    }
+                    m->mem_inst = new_mem;
+                }
                 break;
             }
-            case 3: imprimir_memoria_dados(data_mem); break;
-            case 4: print_instruction_memory(program_mem, program_mem_size); break;
-            case 5: print_regs(regs, 8); break;
-			case 6: print_instruction_memory(program_mem, program_mem_size); print_regs(regs, 8); imprimir_memoria_dados(data_mem); break;
-            //no momento, somente passa por todas as instruções decodificando
-            case 9: executar_programa(program_mem, program_mem_size); break;
+            case 3: data_memory_print(m->mem_data); break;
+            case 4: print_instruction_memory(m->mem_inst); break;
+            case 5: print_regs(m->regs); break;
+            case 6: print_instruction_memory(m->mem_inst); print_regs(m->regs); data_memory_print(m->mem_data); break;
+            case 9: break;
             default: printf("\nOpção inválida!"); break;
         }
     }while(op != 0);
 
-    free(regs);
-    free(program_mem);
-    free(data_mem);
     return 0;
 }
