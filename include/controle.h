@@ -10,13 +10,15 @@ typedef struct{
 } In_controle;
 
 typedef struct{
-    uint8_t Reg_destino;
-    uint8_t ULA_op;
-    uint8_t MemtoReg;
+    uint8_t RegDst;
     uint8_t RegWrite;
+    uint8_t Memtoreg;
+    uint8_t ULASrc;
     uint8_t MemRead;
     uint8_t MemWrite;
     uint8_t Branch;
+    uint8_t jump;
+    uint8_t ULA_op;
 } Out_controle;
 
 typedef struct{

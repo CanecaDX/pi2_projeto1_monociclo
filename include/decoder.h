@@ -3,10 +3,7 @@
 
 #include <stdint.h>
 #include "instruction_mem.h"
-
-//usa enum para determinar o tipo de instruções
-//vai acessar os campos da struct baseado no index do enum
-
+//por enquanto usar a struct, depois "emburrecer o fluxo no monociclo"
 Decoded decode(uint16_t instruction);
 
 #endif

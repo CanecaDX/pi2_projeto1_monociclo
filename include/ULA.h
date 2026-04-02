@@ -6,6 +6,7 @@
 typedef struct {
     int8_t op1;
     int8_t op2;
+    uint8_t ula_op;
 }In_ULA;
 
 typedef struct {
@@ -18,4 +19,6 @@ typedef struct {
     In_ULA input;
     Out_ULA output;
 } ULA;
+
+Out_ULA ulaExecuta(In_ULA *p);
 #endif // ULA_H

@@ -12,6 +12,9 @@ int main(){
         printf("\nFalha ao alocar monociclo.");
         return 1;
     }
+    //teste de representação dos registradores
+    //m->regs_bank->registradores[1] = -5;
+    //m->regs_bank->registradores[2] = 10;
 
     do{
         printf("\n------------------------------------");
@@ -27,6 +30,7 @@ int main(){
         printf("\n9_ Rodar programa");
         printf("\n10_ Rodar 1 instrução");
         printf("\n11_ Voltar 1 instrução");
+        printf("\n12_ Exibir estatísticas");
         printf("\n------------------------------------");
         printf("\nInforme a opção desejada: ");
         scanf("%d", &op);
@@ -56,9 +60,13 @@ int main(){
             }
             case 3: data_memory_print(m->mem_data); break;
             case 4: print_instruction_memory(m->mem_inst); break;
-            case 5: print_regs(m->regs); break;
-            case 6: print_instruction_memory(m->mem_inst); print_regs(m->regs); data_memory_print(m->mem_data); break;
-            case 9: break;
+            case 5: print_regs(m->regs_bank); break;
+            case 6: print_instruction_memory(m->mem_inst); printf("\n"); print_regs(m->regs_bank); printf("\n"); data_memory_print(m->mem_data); break;
+            case 7: mem_to_asm(m->mem_inst); break;
+            case 8: data_memory_save(m->mem_data, "output_dados.dat"); break;
+            case 9: run(m); break;
+            case 10: run_step(m); break;
+            case 11: run_back(m); break;
             default: printf("\nOpção inválida!"); break;
         }
     }while(op != 0);

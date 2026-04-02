@@ -6,7 +6,7 @@ Memoria_dado *data_memory_create(void){
 	Memoria_dado *mem = calloc(1, sizeof(Memoria_dado));
 	if (!mem) return NULL;
 
-	mem->dado = calloc(DATA_MEM_SIZE, sizeof(Dado));
+	mem->dado = calloc(DATA_MEM_SIZE, sizeof(int8_t));
 	if (!mem->dado) {
 		free(mem);
 		return NULL;
@@ -41,10 +41,10 @@ void data_memory_load(Memoria_dado *mem, const char *nome_arquivo){
 		size_t count = fread(buffer, sizeof(int8_t), DATA_MEM_SIZE, file);
 
 		for (size_t i = 0; i < count; i++) {
-			(mem->dado + i)->valor = buffer[i];
+			mem->dado[i] = buffer[i];
 		}
 		for (size_t i = count; i < DATA_MEM_SIZE; i++) {
-			(mem->dado + i)->valor = 0;
+			mem->dado[i] = 0;
 		}
 	} else {
 		int cont = 0;
@@ -52,15 +52,15 @@ void data_memory_load(Memoria_dado *mem, const char *nome_arquivo){
 
 		while (cont < DATA_MEM_SIZE && fscanf(file, "%d", &aux) == 1) {
 			if (aux <= 127 && aux >= -128) {
-				(mem->dado + cont)->valor = (int8_t)aux;
+				mem->dado[cont] = (int8_t)aux;
 			} else {
 				printf("\ndado maior que suportado pelo programa ");
-				(mem->dado + cont)->valor = 0;
+				mem->dado[cont] = 0;
 			}
 			cont++;
 		}
 		for (int i = cont; i < DATA_MEM_SIZE; i++) {
-			(mem->dado + i)->valor = 0;
+			mem->dado[i] = 0;
 		}
 	}
 
@@ -72,6 +72,40 @@ void data_memory_print(const Memoria_dado *mem){
 	if (!mem || !mem->dado) return;
 	printf("\nMemória de dados: ");
 	for (int i = 0; i < DATA_MEM_SIZE; i++) {
-		printf("\n[%d] : %d", i, (mem->dado + i)->valor);
+		printf("\n[%d] : %d", i, mem->dado[i]);
 	}
+}
+
+
+Out_data_mem ex_data_mem(In_data_mem input, Memoria_dado *mem){
+	Out_data_mem output = {0};
+	if (input.adress < 0 || input.adress >= DATA_MEM_SIZE) {
+		printf("\nEndereço de memória inválido: %d", input.adress);
+		return output;
+	}
+	if (input.read_mem) {
+		output.dado_lido = mem->dado[input.adress];
+	}
+	if (input.write_mem) {
+		mem->dado[input.adress] = input.dado_escrever;
+	}
+	return output;
+}
+
+void data_memory_save(Memoria_dado *mem, const char *nome_arquivo){
+	
+	if (!mem || !mem->dado) return;
+	
+	FILE *file = fopen(nome_arquivo, "w"); 
+	if (file == NULL) {
+		printf("Erro ao abrir o arquivo para escrita");
+		return;
+	}
+	
+	for (int i = 0; i < mem->size; i++) {
+		fprintf(file, "%d\n", mem->dado[i]);
+	}
+	
+	printf("Memoria salva com sucesso em %s...", nome_arquivo);
+	fclose(file);
 }

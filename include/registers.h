@@ -2,27 +2,28 @@
 #define REGISTERS_H
 
 #include <stdint.h>
+typedef struct{
+	uint8_t reg_base1;
+	uint8_t reg_base2;
+	uint8_t reg_destino;
+	uint8_t write_reg;
+	int8_t dado_escrever;
+} In_registers;
+
+typedef struct{
+	int8_t val1;
+	int8_t val2;
+}Out_registers;
 
 typedef struct {
-	int8_t reg_base1;
-	int8_t reg_base2;
-	int8_t reg_destino;
-	int8_t dado_escrito;
-}In_registradores;
-
-typedef struct {
-	int8_t reg_base1;
-	int8_t reg_base2;
-} Out_registradores;
-
-typedef struct {
-	In_registradores input;
-	Out_registradores output;
+	In_registers in_regs;
+	Out_registers out_regs;
 	uint8_t *registradores;
-	int count;
+	int size;
 } Banco_registradores;
 
-Banco_registradores *registers_create(int count);
+Banco_registradores *registers_create(); 
+Out_registers ex_registers(In_registers input, Banco_registradores *regs);
 void print_regs(const Banco_registradores *regs);
 
 #endif

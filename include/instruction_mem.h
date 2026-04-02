@@ -5,7 +5,9 @@
 
 #define INSTR_MEM_SIZE 256
 
-typedef enum { TYPE_R = 1, TYPE_I = 2, TYPE_J = 3 } Tipo;
+//criar contador para quando carregar arquivo da memória (mem_to_asm)
+
+typedef enum { TYPE_R = 0, TYPE_I, TYPE_J } Tipo;
 
 typedef struct {
     uint8_t opcode;
@@ -18,19 +20,26 @@ typedef struct {
     Tipo type;
 } Decoded;
 
+typedef struct{
+    uint16_t instr_lida;
+}Out_instruction_mem;
+
 typedef struct {
-	uint16_t instr;
+    uint16_t instr;
 } Instrucao;
 
 typedef struct {
-	Instrucao *instrucao;
-	int size;
+    Out_instruction_mem out_instr;
+    Instrucao *instrucao;
+    int size; /* capacidade total */
+    int loaded_count; /* quantidade de instrucoes carregadas */
 } Memoria_instrucao;
 
 Memoria_instrucao *instruction_memory_create(void);
 Memoria_instrucao *instruction_memory_load_file(const char *mem_name);
 void print_instruction_memory(const Memoria_instrucao *mem);
 void print_binary(uint16_t value);
+void mem_to_asm(Memoria_instrucao *mem);
 
 
 #endif
