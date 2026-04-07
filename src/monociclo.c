@@ -157,6 +157,10 @@ int run_step(Monociclo *m){
     ex_registers(m->regs_bank->in_regs, m->regs_bank);
 
     printf("INSTRUÇÃO 0x%02X NO ÍNDICE %d EXECUTADA!\n", pc_inst->instr, pc_atual);
+    printf("Instrução executada: ");
+    exibe1_asm(m->mem_inst, pc_atual);
+    printf("Proxíma instrução: ");
+    exibe1_asm(m->mem_inst, m->pc->pc_index);
     printf("PC AGORA ESTÁ EM : %d \n", m->pc->pc_index);
 
     return 0;

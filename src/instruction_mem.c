@@ -184,3 +184,79 @@ void mem_to_asm(Memoria_instrucao *mem) {
 
     fclose(file);
 }
+
+void print_asm(Decoded d){
+	   
+        if (d.type == TYPE_R) {
+            switch (d.funct) {
+                case 0x0: // add
+                    printf("add $%u, $%u, $%u\n", d.rd, d.rs, d.rt);
+                    break;
+                case 0x2: // sub
+                    printf("sub $%u, $%u, $%u\n", d.rd, d.rs, d.rt);
+                    break;
+                case 0x4: // and
+                    printf("and $%u, $%u, $%u\n", d.rd, d.rs, d.rt);
+                    break;
+                case 0x5: // or
+                    printf("or $%u, $%u, $%u\n", d.rd, d.rs, d.rt);
+                    break;
+            }
+        } else if (d.type == TYPE_I) {
+            switch (d.opcode) {
+                case 0x4: // addi
+                    printf("addi $%u, $%u, %d\n", d.rt, d.rs, d.imm);
+                    break;
+                case 0xB: // lw
+                    printf("lw $%u, %d($%u)\n", d.rt, d.imm, d.rs);
+                    break;
+                case 0xF: // sw
+                    printf("sw $%u, %d($%u)\n", d.rt, d.imm, d.rs);
+                    break;
+            }
+        } else if (d.type == TYPE_J) {
+            switch(d.opcode){
+                case 0x8: // beq
+                    printf("beq $%u, $%u, %d\n", d.rt, d.rs, d.imm);
+                    break;
+                case 0x2: // j
+                    printf("j %u\n", d.address);
+                    break;
+            }
+        }
+    }	
+
+void exibe1_asm(Memoria_instrucao *mem, int index){
+	
+	int count = mem ? mem->loaded_count : 0;
+	
+	if(!count){
+		printf("Erro ao imprimir assembly");
+		return;
+	}
+	
+        Instrucao raw = mem->instrucao[index];
+        Decoded d = decode(raw.instr);
+		print_asm(d);
+		//Inserir sequencias de if para explicar cada instrução.
+		//printf("Soma o valor imediado %d, com o valor do resgistrador $%u e armazena o resultado no registrador $%u\n", d.imm, d.rs, d.rt);
+		printf("\n");
+}
+
+void exibeTodos_asm(Memoria_instrucao *mem){
+	
+	int count = mem ? mem->loaded_count : 0;
+	
+	if(!count){
+		printf("Erro ao imprimir assembly");
+		return;
+	}
+	
+	  for (int i = 0; i < count; i++) {
+        Instrucao raw = mem->instrucao[i];
+        Decoded d = decode(raw.instr);
+        print_asm(d);
+      }
+}
+
+

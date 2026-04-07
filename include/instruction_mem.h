@@ -40,6 +40,9 @@ Memoria_instrucao *instruction_memory_load_file(const char *mem_name);
 void print_instruction_memory(const Memoria_instrucao *mem);
 void print_binary(uint16_t value);
 void mem_to_asm(Memoria_instrucao *mem);
+void print_asm(Decoded d);
+void exibe1_asm(Memoria_instrucao *mem, int index);
+void exibeTodos_asm(Memoria_instrucao *mem);
 
 
 #endif

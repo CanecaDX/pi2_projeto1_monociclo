@@ -7,7 +7,7 @@
 
 Decoded decode(uint16_t instruction){
     Decoded decode_instruction;
-    printf("INSTRUÇÃO 0x%04X SENDO DECODIFICADA..", instruction);
+    //printf("INSTRUÇÃO 0x%04X SENDO DECODIFICADA..", instruction);
     //retorna todos os campos preenchidos
     decode_instruction.opcode = (instruction >> 12) & 0xF;    
     decode_instruction.rs     = (instruction >> 9) & 0x7;
