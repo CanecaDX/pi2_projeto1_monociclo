@@ -8,6 +8,8 @@
 int main(){
     int op;
     Monociclo *m = monociclo_create();
+    Monociclo  *m_backup = monociclo_create();
+
     if (!m) {
         printf("\nFalha ao alocar monociclo.");
         return 1;
@@ -21,10 +23,10 @@ int main(){
         printf("\n0_ Fechar programa");
         printf("\n1_ Carregar memória de dados .dat");
         printf("\n2_ Carregar memória de instruções .mem");
-        printf("\n3_ Imprimir dados na memória de dados");
-        printf("\n4_ Imprimir dados na memória de instruções");
-        printf("\n5_ Imprimir dados no banco de registradores");
-        printf("\n6_ Imprimir dados do simulador");
+        printf("\n3_ Imprimir memória de dados");
+        printf("\n4_ Imprimir memória de instruções");
+        printf("\n5_ Imprimir banco de registradores");
+        printf("\n6_ Imprimir simulador");
         printf("\n7_ Salvar arquivo assembly .asm");
         printf("\n8_ Salvar dados .dat");
         printf("\n9_ Rodar programa");
@@ -61,12 +63,12 @@ int main(){
             case 3: data_memory_print(m->mem_data); break;
             case 4: print_instruction_memory(m->mem_inst); break;
             case 5: print_regs(m->regs_bank); break;
-            case 6: print_instruction_memory(m->mem_inst); printf("\n"); print_regs(m->regs_bank); printf("\n"); data_memory_print(m->mem_data); break;
+            case 6: print_instruction_memory(m->mem_inst); printf("\n"); data_memory_print(m->mem_data); print_regs(m->regs_bank); printf("\n"); printf("\n\nPC ESTÁ EM : %d\n", m->pc->pc_index); break;
             case 7: mem_to_asm(m->mem_inst); break;
             case 8: data_memory_save(m->mem_data, "output_dados.dat"); break;
             case 9: run(m); break;
-            case 10: run_step(m); break;
-            case 11: run_back(m); break;
+            case 10: run_step(m); copiaSimulador(m_backup,m); break;
+            case 11: copiaSimulador(m,m_backup); printf("VOLTOU 1 INSTRUCAO ! \n"); printf("PC ESTÁ EM : %d \n", m->pc->pc_index);  break;
             default: printf("\nOpção inválida!"); break;
         }
     }while(op != 0);

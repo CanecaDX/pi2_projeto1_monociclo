@@ -116,11 +116,13 @@ Memoria_instrucao *instruction_memory_load_file(const char *mem_name){
 
 void print_instruction_memory(const Memoria_instrucao *mem){
     if (!mem || !mem->instrucao) return;
-    printf("\nMemória de instruções: ");
+    printf("\n\n\n");
+    printf("MEMÓRIA DE INSTRUÇÕES: ");
     for (int i = 0; i < INSTR_MEM_SIZE; i++){
         printf("\nInstr[%d] = ", i);
         print_binary(mem->instrucao[i].instr);
     }
+    printf("\n");
 }
 
 void print_binary(uint16_t value){
@@ -129,7 +131,7 @@ void print_binary(uint16_t value){
 }
 
 void mem_to_asm(Memoria_instrucao *mem) {
-
+    printf("GERANDO ARQUIVO .ASM ...");
     FILE *file = fopen("program.asm", "w");
     if (!file) {
         perror("Erro ao criar arquivo .asm");

@@ -27,5 +27,9 @@ typedef struct{
 } Controle;
 
 Out_controle controle_sinais(In_controle in);
+void copiaEntradaControle(In_controle controle_backup, In_controle controle);
+void copiaSaidaControle(Out_controle controle_backup, Out_controle controle);
+void copiaControle(Controle* controle_backup, Controle* controle);
+
 
 #endif

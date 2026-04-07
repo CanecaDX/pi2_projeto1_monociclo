@@ -70,17 +70,18 @@ void data_memory_load(Memoria_dado *mem, const char *nome_arquivo){
 
 void data_memory_print(const Memoria_dado *mem){
 	if (!mem || !mem->dado) return;
-	printf("\nMemória de dados: ");
+	printf("\n\n\n");
+	printf("MEMÓRIA DE DADOS: ");
 	for (int i = 0; i < DATA_MEM_SIZE; i++) {
 		printf("\n[%d] : %d", i, mem->dado[i]);
 	}
+	printf("\n");
 }
-
 
 Out_data_mem ex_data_mem(In_data_mem input, Memoria_dado *mem){
 	Out_data_mem output = {0};
 	if (input.adress < 0 || input.adress >= DATA_MEM_SIZE) {
-		printf("\nEndereço de memória inválido: %d", input.adress);
+		printf("Não é acessado valor na memória");
 		return output;
 	}
 	if (input.read_mem) {
@@ -93,7 +94,7 @@ Out_data_mem ex_data_mem(In_data_mem input, Memoria_dado *mem){
 }
 
 void data_memory_save(Memoria_dado *mem, const char *nome_arquivo){
-	
+	printf("\nGERANDO ARQUIVO DE DADOS .DAT ...");
 	if (!mem || !mem->dado) return;
 	
 	FILE *file = fopen(nome_arquivo, "w"); 
@@ -109,3 +110,10 @@ void data_memory_save(Memoria_dado *mem, const char *nome_arquivo){
 	printf("Memoria salva com sucesso em %s...", nome_arquivo);
 	fclose(file);
 }
+
+void copiaMemoria(Memoria_dado* memoria_backup, Memoria_dado* memoria){
+    int i;
+    for(i = 0; i < DATA_MEM_SIZE; i++){
+		memoria_backup->dado[i] = memoria->dado[i];
+        }
+    }

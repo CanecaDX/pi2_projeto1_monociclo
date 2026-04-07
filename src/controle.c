@@ -61,7 +61,7 @@ Out_controle controle_sinais(In_controle in){
 			out.MemWrite = 0;
 			out.Branch = 1;
 			out.jump = 0;
-			out.ULA_op = 1; 
+			out.ULA_op = 2; 
             break;
 
         case 0x2: //j
@@ -82,3 +82,28 @@ Out_controle controle_sinais(In_controle in){
 
 	return out;
 }
+
+void copiaEntradaControle(In_controle input_backup, In_controle input){
+ input_backup.opcode = input.opcode;
+ input_backup.function = input.function;
+}
+
+void copiaSaidaControle(Out_controle output_backup, Out_controle output){
+ output_backup.RegDst = output.RegDst;
+ output_backup.RegWrite = output.RegWrite;
+ output_backup.Memtoreg = output.Memtoreg;
+ output_backup.ULASrc = output.ULASrc;
+ output_backup.MemRead = output.MemRead;
+ output_backup.MemWrite = output.MemWrite;
+ output_backup.Branch = output.Branch;
+ output_backup.jump = output.jump;
+ output_backup.ULA_op = output.ULA_op; 
+}
+
+void copiaControle(Controle* controle_backup, Controle* controle){
+ controle_backup->input = controle->input;
+ copiaEntradaControle(controle_backup->input, controle->input);
+ controle_backup->output = controle->output;
+ copiaSaidaControle(controle_backup->output, controle->output);
+
+} 

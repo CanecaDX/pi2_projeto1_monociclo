@@ -17,10 +17,12 @@ Banco_registradores *registers_create(){
 
 void print_regs(const Banco_registradores *regs){
     if (!regs || !regs->registradores) return;
-    printf("\nBanco de registradores: ");
+    printf("\n\n\n");
+    printf("BANCO DE REGISTRADORES: ");
     for (int i = 0; i < 8; i++){
-        printf("\n$%d = 0x%02X", i, (int8_t)(regs->registradores[i]));
+        printf("\n$%d = %d", i, (int8_t)(regs->registradores[i]));
     }
+    printf("\n");
 }
 
 Out_registers ex_registers(In_registers input, Banco_registradores *regs){
@@ -33,4 +35,11 @@ Out_registers ex_registers(In_registers input, Banco_registradores *regs){
         regs->registradores[input.reg_destino] = (uint8_t)(input.dado_escrever);
     }
     return output;
+}
+
+void copiaBancoRegistradores(Banco_registradores* banco_backup, Banco_registradores* banco){
+    int i;
+    for(i = 0; i < 8; i++){
+       banco_backup->registradores[i] =  banco->registradores[i]; 
+    }
 }

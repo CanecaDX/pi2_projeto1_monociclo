@@ -20,16 +20,13 @@ void pc_step(ProgramCounter *pc){
     ula_pc_input.op2 = 1;
     ula_pc_input.ula_op = 0x0;
     if (!pc) return;
-    if(pc->jump_flag == 1){
-        // TODO: calcular salto via ULA e atualizar pc_index
-        //chama o pc_set
-        pc->jump_flag = 0;
-    }else if(pc->beq_flag == 1){
-        // TODO: calcular beq via ULA e atualizar pc_index
-        //chama o pc_set
-        pc->beq_flag = 0;
-    }else{
-        ula_pc_output = ulaExecuta(&ula_pc_input);
-        pc_set(pc, (uint8_t)ula_pc_output.resultado);
-    }
+    ula_pc_output = ulaExecuta(&ula_pc_input);
+    pc_set(pc, (uint8_t)ula_pc_output.resultado);  
+
+}
+
+void copiaPC(ProgramCounter* pc_backup, ProgramCounter* pc){
+ pc_backup->pc_index = pc->pc_index;
+ pc_backup->jump_flag = pc->jump_flag;
+ pc_backup->beq_flag = pc->beq_flag;
 }

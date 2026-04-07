@@ -46,6 +46,7 @@ Monociclo *monociclo_create(void){
 }
 
 int run_step(Monociclo *m){
+    int pc_atual = 0;
     Instrucao *instrucao = NULL;
     size_t size = 0;
     Instrucao *pc_inst = NULL;
@@ -71,6 +72,7 @@ int run_step(Monociclo *m){
     // Se o PC sair do range do vetor o programa termina
     if ((size_t)m->pc->pc_index >= size) return 1;
 
+    pc_atual = m->pc->pc_index;
     pc_inst = &instrucao[m->pc->pc_index];
     decoded_inst = decode(pc_inst->instr);
 
@@ -81,9 +83,12 @@ int run_step(Monociclo *m){
     //sinais
     sinais = controle_sinais(in_controle);
 
-    //trata j e beq dentro do pc_step???
-    //como voltar ao inicio do fluxo do monociclo???
-    pc_step(m->pc);
+    if(sinais.jump == 0 && sinais.Branch == 0){
+        pc_step(m->pc);
+    } else if(sinais.jump == 1) {
+        pc_set(m->pc, (uint8_t)decoded_inst.imm);
+        sinais.jump = 0;
+    }    
 
     //sinaliza qual é o rs
     m->regs_bank->in_regs.write_reg = sinais.RegWrite;
@@ -114,6 +119,25 @@ int run_step(Monociclo *m){
 
     ula_output = ulaExecuta(&ula_input);
 
+    if(sinais.Branch == 0x1){
+        if(ula_output.zero == 0x0){
+            ula_input.op1 = m->pc->pc_index;
+			ula_input.op2 = 1;
+			ula_input.ula_op = 0x0;
+			ula_output = ulaExecuta(&ula_input);
+			pc_set(m->pc, (uint8_t)ula_output.resultado);
+        } else{
+            ula_input.op1 = m->pc->pc_index;
+			ula_input.op2 = 1;
+			ula_input.ula_op = 0x0;
+			ula_output = ulaExecuta(&ula_input);
+			ula_input.op1 = ula_output.resultado;
+			ula_input.op2 =  decoded_inst.imm;
+			ula_output = ulaExecuta(&ula_input);
+			pc_set(m->pc, (uint8_t)ula_output.resultado);
+        }
+    }
+
     //prepara os dados para a memória de dados
     data_mem_input.adress = ula_output.resultado;
     data_mem_input.write_mem = sinais.MemWrite;
@@ -132,6 +156,9 @@ int run_step(Monociclo *m){
     //chama a função dos registradores, só escreve se a flag de escrita for 1
     ex_registers(m->regs_bank->in_regs, m->regs_bank);
 
+    printf("INSTRUÇÃO 0x%02X NO ÍNDICE %d EXECUTADA!\n", pc_inst->instr, pc_atual);
+    printf("PC AGORA ESTÁ EM : %d \n", m->pc->pc_index);
+
     return 0;
 }
 
@@ -146,4 +173,15 @@ int run(Monociclo *m){
 int run_back(Monociclo *m){
     (void)m;
     return -1;
+}
+
+void copiaSimulador (Monociclo* m_backup, Monociclo* m){
+	 copiaBancoRegistradores(m_backup->regs_bank, m->regs_bank);
+	 copiaMemoria(m_backup->mem_data, m->mem_data);
+	 copiaPC(m_backup->pc,m->pc);
+	 if(m->controle != NULL){
+		 copiaControle(m_backup->controle, m->controle);
+	 }
+	 
+	 
 }

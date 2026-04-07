@@ -25,5 +25,7 @@ typedef struct {
 Banco_registradores *registers_create(); 
 Out_registers ex_registers(In_registers input, Banco_registradores *regs);
 void print_regs(const Banco_registradores *regs);
+void copiaBancoRegistradores(Banco_registradores* banco_backup, Banco_registradores* banco);
+
 
 #endif

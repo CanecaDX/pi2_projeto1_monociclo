@@ -24,6 +24,7 @@ typedef struct {
 Monociclo *monociclo_create(void);
 int run(Monociclo *m);
 int run_step(Monociclo *m);
-int run_back(Monociclo *m); //precisa implementação
+int run_back(Monociclo *m); 
+void copiaSimulador (Monociclo * m_backup, Monociclo* m);
 
 #endif
