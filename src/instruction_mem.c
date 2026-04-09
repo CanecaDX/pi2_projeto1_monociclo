@@ -238,8 +238,43 @@ void exibe1_asm(Memoria_instrucao *mem, int index){
         Instrucao raw = mem->instrucao[index];
         Decoded d = decode(raw.instr);
 		print_asm(d);
-		//Inserir sequencias de if para explicar cada instrução.
-		//printf("Soma o valor imediado %d, com o valor do resgistrador $%u e armazena o resultado no registrador $%u\n", d.imm, d.rs, d.rt);
+			if (d.type == TYPE_R) {
+				switch (d.funct) {
+					case 0x0: // add
+						printf("Soma o conteudo do registrador $%u com o conteudo de $%u e armazena em $%u", d.rs, d.rt, d.rd);
+						break;
+					case 0x2: // sub
+						printf("Subtrai o conteudo do registrador $%u com o conteudo de $%u e armazena em $%u", d.rs, d.rt, d.rd);
+						break;
+					case 0x4: // and
+						printf("Faz um AND com o conteudo do registrador $%u com o conteudo de $%u e armazena em $%u", d.rs, d.rt, d.rd);
+						break;
+					case 0x5: // or
+						printf("Faz um OR com o conteudo do registrador $%u com o conteudo de $%u e armazena em $%u", d.rs, d.rt, d.rd);
+						break;
+				}
+			}else if(d.type == TYPE_I){
+				switch (d.opcode){
+				case 0x4: // addi
+                    printf("Soma o valor imediato %d com o conteudo do registrador $%u e armazena em $%u", d.imm, d.rs, d.rt);
+                    break;
+                case 0xB: // lw
+					printf("Carrega o conteudo armazenado na posicao %d da memoria para o registrador $%u", d.imm, d.rt);
+                    break;
+                case 0xF: // sw
+                    printf("Armazena o conteudo do registrador $%u na posicao %d da memoria", d.rt, d.imm);
+                    break;
+				}	
+			}else if(d.type == TYPE_J){
+			   switch (d.opcode){
+				case 0x8: // beq
+                    printf("Se os valores dos registradores $%u e $%u forem iguais, realiza um salto para a posicao informada.", d.rt, d.rs);
+                    break;
+                case 0x2: // j
+                    printf("Realiza um salto para posicao %u", d.address);
+                    break;
+			   }
+			}
 		printf("\n");
 }
 

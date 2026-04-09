@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include "monociclo.h"
@@ -156,11 +155,16 @@ int run_step(Monociclo *m){
     //chama a função dos registradores, só escreve se a flag de escrita for 1
     ex_registers(m->regs_bank->in_regs, m->regs_bank);
 
+
+	// Saida
     printf("INSTRUÇÃO 0x%02X NO ÍNDICE %d EXECUTADA!\n", pc_inst->instr, pc_atual);
+    printf("\n");
     printf("Instrução executada: ");
     exibe1_asm(m->mem_inst, pc_atual);
+    printf("\n");
     printf("Proxíma instrução: ");
     exibe1_asm(m->mem_inst, m->pc->pc_index);
+    printf("\n");
     printf("PC AGORA ESTÁ EM : %d \n", m->pc->pc_index);
 
     return 0;
