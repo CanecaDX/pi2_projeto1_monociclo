@@ -31,8 +31,8 @@ typedef struct {
 typedef struct {
     Out_instruction_mem out_instr;
     Instrucao *instrucao;
-    int size; /* capacidade total */
-    int loaded_count; /* quantidade de instrucoes carregadas */
+    int size; 
+    int loaded_count; 
 } Memoria_instrucao;
 
 Memoria_instrucao *instruction_memory_create(void);

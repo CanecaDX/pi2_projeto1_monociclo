@@ -21,15 +21,15 @@ int main(){
     do{
         printf("\n------------------------------------");
         printf("\n0_ Fechar programa");
-        printf("\n1_ Carregar memória de dados .dat");
-        printf("\n2_ Carregar memória de instruções .mem");
-        printf("\n3_ Imprimir memória de dados");
-        printf("\n4_ Imprimir memória de instruções");
-        printf("\n5_ Imprimir banco de registradores");
-        printf("\n6_ Imprimir instruçoes em asm");
-		printf("\n7_ Imprimir simulador");
-        printf("\n8_ Salvar arquivo assembly .asm");
-        printf("\n9_ Salvar dados .dat");
+        printf("\n1_ Carregar arquivo de memória secundária (.dat)");
+        printf("\n2_ Carregar arquivo de memória de principal (.mem)");
+        printf("\n3_ Mostrar dados na memória secundária");
+        printf("\n4_ Mostrar dados na memória de principal");
+        printf("\n5_ Mostrar dados no banco de registradores");
+        printf("\n6_ Mostrar instruções no formato Assembly");
+		printf("\n7_ Mostrar todo o simulador");
+        printf("\n8_ Salvar arquivo Assembly (.asm)");
+        printf("\n9_ Salvar dados da memória secundária.(dat)");
         printf("\n10_ Rodar programa");
         printf("\n11_ Rodar 1 instrução");
         printf("\n12_ Voltar 1 instrução");
@@ -58,19 +58,60 @@ int main(){
                         free(m->mem_inst);
                     }
                     m->mem_inst = new_mem;
+                    m->has_executed = 0;
+                    m->just_rewound = 0;
                 }
                 break;
             }
             case 3: data_memory_print(m->mem_data); break;
             case 4: print_instruction_memory(m->mem_inst); break;
             case 5: print_regs(m->regs_bank); break;
-            case 6: exibeTodos_asm(m->mem_inst); break;
+            case 6: {
+                if (!m->mem_inst || m->mem_inst->loaded_count == 0) {
+                    printf("Não existem instruções na memória ainda. Para exibir o Assembly, carregue instruções primeiro.\n");
+                    break;
+                }
+                exibeTodos_asm(m->mem_inst);
+                break;
+            }
             case 7:	print_instruction_memory(m->mem_inst); printf("\n"); data_memory_print(m->mem_data); print_regs(m->regs_bank); printf("\n"); exibeTodos_asm(m->mem_inst); printf("\n"); printf("\n\nPC ESTÁ EM : %d\n", m->pc->pc_index); break;
-            case 8: mem_to_asm(m->mem_inst); break;
+            case 8: {
+                if (!m->mem_inst || m->mem_inst->loaded_count == 0) {
+                    printf("Não existem instruções na memória ainda. Para gerar o arquivo Assembly, carregue instruções primeiro.\n");
+                    break;
+                }
+                mem_to_asm(m->mem_inst);
+                break;
+            }
             case 9: data_memory_save(m->mem_data, "output_dados.dat"); break;
-            case 10: run(m); break;
-            case 11: run_step(m); copiaSimulador(m_backup,m); break;
-            case 12: copiaSimulador(m,m_backup); printf("VOLTOU 1 INSTRUCAO ! \n"); printf("PC ESTÁ EM : %d \n", m->pc->pc_index);  break;
+            case 10: {
+                run(m);
+                m->just_rewound = 1;
+                break;
+            }
+            case 11: {
+                int status = run_step(m);
+                if (status == 0) {
+                    copiaSimulador(m_backup,m);
+                }
+                break;
+            }
+            case 12: {
+                if (!m->has_executed) {
+                    printf("Para voltar uma instrução, ao menos uma deve ter sido executada.\n");
+                    break;
+                }
+                if (m->just_rewound) {
+                    printf("Não é possível voltar duas instruções seguidas.\n");
+                    break;
+                }
+                copiaSimulador(m,m_backup);
+                m->just_rewound = 1;
+                printf("VOLTOU 1 INSTRUCAO ! \n");
+                printf("PC ESTA EM : %d \n", m->pc->pc_index);
+                break;
+            }
+            case 13: break;
             default: printf("\nOpção inválida!"); break;
         }
     }while(op != 0);

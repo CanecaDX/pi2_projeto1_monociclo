@@ -14,6 +14,8 @@ Monociclo *monociclo_create(void){
     m->controle = NULL;
     m->decoded_inst = calloc(1, sizeof(Decoded));
     m->ula = calloc(1, sizeof(ULA));
+    m->has_executed = 0;
+    m->just_rewound = 0;
 
     if (!m->pc || !m->regs_bank || !m->mem_data || !m->mem_inst || !m->decoded_inst || !m->ula) {
         if (m->pc) {
@@ -66,7 +68,10 @@ int run_step(Monociclo *m){
     // Base e tamanho efetivo da memoria de instrucoes carregada.
     instrucao = m->mem_inst->instrucao;
     size = (size_t)m->mem_inst->loaded_count;
-    if (size == 0) return 1;
+    if (size == 0) {
+        printf("Não há instruções carregadas na memória. Para rodar um programa, carregue instruções primeiro.\n");
+        return 1;
+    }
 
     // Se o PC sair do range do vetor o programa termina
     if ((size_t)m->pc->pc_index >= size) return 1;
@@ -119,13 +124,7 @@ int run_step(Monociclo *m){
     ula_output = ulaExecuta(&ula_input);
 
     if(sinais.Branch == 0x1){
-        if(ula_output.zero == 0x0){
-            ula_input.op1 = m->pc->pc_index;
-			ula_input.op2 = 1;
-			ula_input.ula_op = 0x0;
-			ula_output = ulaExecuta(&ula_input);
-			pc_set(m->pc, (uint8_t)ula_output.resultado);
-        } else{
+        if(ula_output.zero == 0x1){
             ula_input.op1 = m->pc->pc_index;
 			ula_input.op2 = 1;
 			ula_input.ula_op = 0x0;
@@ -134,7 +133,10 @@ int run_step(Monociclo *m){
 			ula_input.op2 =  decoded_inst.imm;
 			ula_output = ulaExecuta(&ula_input);
 			pc_set(m->pc, (uint8_t)ula_output.resultado);
+        }else{
+            pc_step(m->pc);
         }
+        sinais.Branch = 0;
     }
 
     //prepara os dados para a memória de dados
@@ -156,6 +158,9 @@ int run_step(Monociclo *m){
     ex_registers(m->regs_bank->in_regs, m->regs_bank);
 
 
+    m->has_executed = 1;
+    m->just_rewound = 0;
+
 	// Saida
     printf("INSTRUÇÃO 0x%02X NO ÍNDICE %d EXECUTADA!\n", pc_inst->instr, pc_atual);
     printf("\n");
@@ -172,6 +177,11 @@ int run_step(Monociclo *m){
 
 int run(Monociclo *m){
     int status = 0;
+    if (!m || !m->mem_inst) return -1;
+    if (m->mem_inst->loaded_count == 0) {
+        printf("Não há instruções carregadas na memória. Para rodar um programa, carregue instruções primeiro.\n");
+        return 1;
+    }
     while ((status = run_step(m)) == 0) {
     }
     printf("Programa finalizado!");

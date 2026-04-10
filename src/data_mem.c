@@ -54,7 +54,7 @@ void data_memory_load(Memoria_dado *mem, const char *nome_arquivo){
 			if (aux <= 127 && aux >= -128) {
 				mem->dado[cont] = (int8_t)aux;
 			} else {
-				printf("\ndado maior que suportado pelo programa ");
+				printf("\nDado maior do que suportado pelo programa, ele será zerado na memória.");
 				mem->dado[cont] = 0;
 			}
 			cont++;
@@ -81,7 +81,7 @@ void data_memory_print(const Memoria_dado *mem){
 Out_data_mem ex_data_mem(In_data_mem input, Memoria_dado *mem){
 	Out_data_mem output = {0};
 	if (input.adress < 0 || input.adress >= DATA_MEM_SIZE) {
-		printf("Não é acessado valor na memória");
+		printf("Não é acessado valor na memória, resultado fora do limite de endereçamento");
 		return output;
 	}
 	if (input.read_mem) {

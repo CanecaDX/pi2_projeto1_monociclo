@@ -283,7 +283,7 @@ void exibeTodos_asm(Memoria_instrucao *mem){
 	int count = mem ? mem->loaded_count : 0;
 	
 	if(!count){
-		printf("Erro ao imprimir assembly");
+		printf("Não há instruções carregadas na memória ainda. Para visualizá-las, carregue um arquivo .mem primeiro.");
 		return;
 	}
 	

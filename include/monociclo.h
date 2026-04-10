@@ -19,6 +19,8 @@ typedef struct {
     Decoded *decoded_inst;
     ULA *ula;
     Estatisticas stats;
+    int has_executed;
+    int just_rewound;
 } Monociclo;
 
 Monociclo *monociclo_create(void);

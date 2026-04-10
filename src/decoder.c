@@ -21,9 +21,9 @@ Decoded decode(uint16_t instruction){
 
     if(decode_instruction.opcode == 0){
         decode_instruction.type = TYPE_R;
-    } else if(decode_instruction.opcode == 0x8 || decode_instruction.opcode == 0x2){
+    } else if(decode_instruction.opcode == 0x2){
         decode_instruction.type = TYPE_J;
-    } else if(decode_instruction.opcode == 0x4 || decode_instruction.opcode == 0xB || decode_instruction.opcode == 0xF) {
+    } else if(decode_instruction.opcode == 0x4 || decode_instruction.opcode == 0xB || decode_instruction.opcode == 0xF || decode_instruction.opcode == 0x8){ 
         decode_instruction.type = TYPE_I;
     }
 
