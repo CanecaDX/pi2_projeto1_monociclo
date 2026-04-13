@@ -43,6 +43,7 @@ void mem_to_asm(Memoria_instrucao *mem);
 void print_asm(Decoded d);
 void exibe1_asm(Memoria_instrucao *mem, int index);
 void exibeTodos_asm(Memoria_instrucao *mem);
+void exibeEst(Memoria_instrucao *mem);
 
 
 #endif

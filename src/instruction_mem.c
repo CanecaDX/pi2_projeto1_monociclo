@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "instruction_mem.h"
 #include "decoder.h"
+
 Memoria_instrucao *instruction_memory_create(void){
     Memoria_instrucao *mem = calloc(1, sizeof(Memoria_instrucao));
     if (!mem) return NULL;
@@ -169,12 +170,12 @@ void mem_to_asm(Memoria_instrucao *mem) {
                 case 0xF: // sw
                     fprintf(file, "sw $%u, %d($%u)\n", d.rt, d.imm, d.rs);
                     break;
-            }
-        } else if (d.type == TYPE_J) {
-            switch(d.opcode){
                 case 0x8: // beq
                     fprintf(file, "beq $%u, $%u, %d\n", d.rt, d.rs, d.imm);
                     break;
+            }
+        } else if (d.type == TYPE_J) {
+            switch(d.opcode){
                 case 0x2: // j
                     fprintf(file, "j %u\n", d.address);
                     break;
@@ -213,12 +214,12 @@ void print_asm(Decoded d){
                 case 0xF: // sw
                     printf("sw $%u, %d($%u)\n", d.rt, d.imm, d.rs);
                     break;
-            }
-        } else if (d.type == TYPE_J) {
-            switch(d.opcode){
                 case 0x8: // beq
                     printf("beq $%u, $%u, %d\n", d.rt, d.rs, d.imm);
                     break;
+            }
+        } else if (d.type == TYPE_J) {
+            switch(d.opcode){
                 case 0x2: // j
                     printf("j %u\n", d.address);
                     break;
@@ -264,17 +265,17 @@ void exibe1_asm(Memoria_instrucao *mem, int index){
                 case 0xF: // sw
                     printf("Armazena o conteudo do registrador $%u na posicao %d da memoria", d.rt, d.imm);
                     break;
-				}	
-			}else if(d.type == TYPE_J){
-			   switch (d.opcode){
-				case 0x8: // beq
+                case 0x8: // beq
                     printf("Se os valores dos registradores $%u e $%u forem iguais, realiza um salto para a posicao informada.", d.rt, d.rs);
-                    break;
+                break;
+				}	
+            }else if(d.type == TYPE_J){
+               switch (d.opcode){
                 case 0x2: // j
                     printf("Realiza um salto para posicao %u", d.address);
                     break;
-			   }
-			}
+               }
+            }
 		printf("\n");
 }
 
@@ -292,6 +293,41 @@ void exibeTodos_asm(Memoria_instrucao *mem){
         Decoded d = decode(raw.instr);
         print_asm(d);
       }
+}
+
+void exibeEst(Memoria_instrucao *mem){
+	
+	int r = 0, im = 0, j = 0, mem_d = 0;
+	int count = mem ? mem->loaded_count : 0;
+	
+	printf("\n");
+	printf("%d instruções carregadas: ", count);
+	
+	for (int i = 0; i < count; i++) {
+        Instrucao est = mem->instrucao[i];
+        Decoded d = decode(est.instr);
+        
+        if(d.type == TYPE_R){
+			r++;
+		}else if(d.type == TYPE_I){
+			im++;
+		}else{
+			j++;	
+		}	
+		
+		if(d.type == TYPE_I && (d.opcode == 0xB || d.opcode == 0xF))
+			mem_d++;
+    }
+    
+    printf("\n%d instruções do tipo R", r);
+    printf("\n%d instruções do tipo I", im);
+    printf("\n%d instruções do tipo J", j);
+    printf("\n");
+    printf("\nSerão feitos %d acessos/inserções no banco de registradores", r + im);
+    printf("\nSerão feitos %d operações envolvendo valores imediatos", j + im);
+    printf("\nSerão feitos %d acesos/inserções na memória de dados", mem_d);
+    
+    return;
 }
 
 

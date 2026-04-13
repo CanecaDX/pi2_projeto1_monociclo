@@ -21,15 +21,15 @@ int main(){
     do{
         printf("\n------------------------------------");
         printf("\n0_ Fechar programa");
-        printf("\n1_ Carregar arquivo de memória secundária (.dat)");
-        printf("\n2_ Carregar arquivo de memória de principal (.mem)");
-        printf("\n3_ Mostrar dados na memória secundária");
-        printf("\n4_ Mostrar dados na memória de principal");
+        printf("\n1_ Carregar arquivo de memória de dados (.dat)");
+        printf("\n2_ Carregar arquivo de memória de instruções (.mem)");
+        printf("\n3_ Mostrar dados na memória de dados");
+        printf("\n4_ Mostrar dados na memória de instruções");
         printf("\n5_ Mostrar dados no banco de registradores");
         printf("\n6_ Mostrar instruções no formato Assembly");
 		printf("\n7_ Mostrar todo o simulador");
         printf("\n8_ Salvar arquivo Assembly (.asm)");
-        printf("\n9_ Salvar dados da memória secundária.(dat)");
+        printf("\n9_ Salvar dados da memória da dados (.dat)");
         printf("\n10_ Rodar programa");
         printf("\n11_ Rodar 1 instrução");
         printf("\n12_ Voltar 1 instrução");
@@ -111,7 +111,13 @@ int main(){
                 printf("PC ESTA EM : %d \n", m->pc->pc_index);
                 break;
             }
-            case 13: break;
+            case 13: 
+				if (!m->mem_inst || m->mem_inst->loaded_count == 0) {
+                    printf("Não existem instruções na memória ainda. Para exibir as estatísticas, carregue instruções primeiro.\n");
+                    break;
+                }
+				exibeEst(m->mem_inst);
+            break;
             default: printf("\nOpção inválida!"); break;
         }
     }while(op != 0);

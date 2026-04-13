@@ -90,7 +90,7 @@ int run_step(Monociclo *m){
     if(sinais.jump == 0 && sinais.Branch == 0){
         pc_step(m->pc);
     } else if(sinais.jump == 1) {
-        pc_set(m->pc, (uint8_t)decoded_inst.imm);
+        pc_set(m->pc, (uint8_t)decoded_inst.address);
         sinais.jump = 0;
     }    
 
