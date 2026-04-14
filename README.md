@@ -44,7 +44,7 @@ pi2_projeto1_monociclo/
 
 ## Arquitetura MiniMIPS
 
-A arquitetura MiniMIPS 8 bits é baseada na clássica arquitetura MIPS 32 e tem propósito didático, que busca facilitar o ensino de conceitos de arquitetura de computadores. 
+A arquitetura MiniMIPS 8 bits é baseada na clássica arquitetura MIPS 32 e tem propósito didático, que busca facilitar o ensino de conceitos de arquitetura de computadores [[1](https://ieeexplore.ieee.org/document/6128570)]. 
 
 ### Componentes
 
@@ -228,4 +228,8 @@ As opções **[10]** à **[12]** oferecem diferentes formas de execução do pro
 
 Por fim, a opção **[13]** exibe estatísticas sobre o programa carregado, incluindo o número de instruções por tipo e por classe.
 
+## Referências
 
+[1] C. Ortega-Sanchez, "MiniMIPS: An 8-Bit MIPS in an FPGA for Educational Purposes," 
+2011 International Conference on Reconfigurable Computing and FPGAs (ReConFig), 
+Cancún, México, 2011, pp. 152–157, doi: 10.1109/ReConFig.2011.62.
