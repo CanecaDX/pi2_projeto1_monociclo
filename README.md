@@ -149,7 +149,7 @@ Abaixo estão descritas as instruções suportadas pela arquitetura, em seu form
 
 * **Compilador:** GCC 
 * **Build:** Make 
-* **Sistema Operacional:** Linux / Windows
+* **Sistema Operacional:** Linux / Windows com MSY2 ou ambiente tipo Linux
 
 ---
 
