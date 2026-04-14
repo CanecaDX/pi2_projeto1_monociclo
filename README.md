@@ -18,8 +18,8 @@ O projeto consiste no desenvolvimento de um **simulador em linguagem C** para a 
 ## Desenvolvedores
 
 * Sara Vitória Henssler - saravitoriahenssler@gmail.com
-* Leonardo Cunha Gazen Manzke - 
-* Hector Arbiza -
+* Leonardo Cunha Gazen Manzke - manzkeleonardo@gmail.com
+* Hector Bernardo de Quadros Arbiza -
 
 **Disciplina:** Projeto Integrador II
 **Curso:** Engenharia de Computação

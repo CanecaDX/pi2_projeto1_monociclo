@@ -8,7 +8,6 @@
 #include "controle.h"
 #include "decoder.h"
 #include "ULA.h"
-#include "stats.h"
 
 typedef struct {
     ProgramCounter *pc;
@@ -18,7 +17,6 @@ typedef struct {
     Controle *controle;
     Decoded *decoded_inst;
     ULA *ula;
-    Estatisticas stats;
     int has_executed;
     int just_rewound;
 } Monociclo;
