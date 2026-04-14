@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "monociclo.h"
-#include "stats.h"
 
 Monociclo *monociclo_create(void){
     Monociclo *m = malloc(sizeof(Monociclo));
