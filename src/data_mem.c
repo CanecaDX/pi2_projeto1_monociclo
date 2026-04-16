@@ -81,7 +81,7 @@ void data_memory_print(const Memoria_dado *mem){
 Out_data_mem ex_data_mem(In_data_mem input, Memoria_dado *mem){
 	Out_data_mem output = {0};
 	if (input.adress < 0 || input.adress >= DATA_MEM_SIZE) {
-		printf("Não é acessado valor na memória, resultado fora do limite de endereçamento");
+		printf("\nNão é acessado valor na memória, resultado fora do limite de endereçamento");
 		return output;
 	}
 	if (input.read_mem) {

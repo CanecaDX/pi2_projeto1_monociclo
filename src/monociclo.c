@@ -121,6 +121,10 @@ int run_step(Monociclo *m){
     }
 
     ula_output = ulaExecuta(&ula_input);
+    
+		if(ula_output.Overflow == 1){
+				printf("\nOperação resultou em overflow. Atribuindo valor máximo de representação: %d", ula_output.resultado);
+		}
 
     if(sinais.Branch == 0x1){
         if(ula_output.zero == 0x1){
@@ -161,15 +165,20 @@ int run_step(Monociclo *m){
     m->just_rewound = 0;
 
 	// Saida
-    printf("INSTRUÇÃO 0x%02X NO ÍNDICE %d EXECUTADA!\n", pc_inst->instr, pc_atual);
+    //printf("INSTRUÇÃO 0x%02X NO ÍNDICE %d EXECUTADA!\n", pc_inst->instr, pc_atual);
     printf("\n");
     printf("Instrução executada: ");
     exibe1_asm(m->mem_inst, pc_atual);
     printf("\n");
-    printf("Proxíma instrução: ");
-    exibe1_asm(m->mem_inst, m->pc->pc_index);
-    printf("\n");
-    printf("PC AGORA ESTÁ EM : %d \n", m->pc->pc_index);
+    if(m->pc->pc_index == m->mem_inst->loaded_count){
+		printf("Todas as instruções executadas.");
+	}else{
+		printf("Proxíma instrução: ");
+		exibe1_asm(m->mem_inst, m->pc->pc_index);
+	}
+		printf("\n");
+		printf("PC AGORA ESTÁ EM : %d \n", m->pc->pc_index);
+	
 
     return 0;
 }
@@ -184,6 +193,7 @@ int run(Monociclo *m){
     while ((status = run_step(m)) == 0) {
     }
     printf("Programa finalizado!");
+    m->pc->pc_index = 0;
     return status;
 }
 

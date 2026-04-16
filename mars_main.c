@@ -90,11 +90,12 @@ int main(){
                 break;
             }
             case 11: {
-                int status = run_step(m);
-                if (status == 0) {
-                    copiaSimulador(m_backup,m);
-                }
-                break;
+                 copiaSimulador(m_backup, m);
+                 if(m->pc->pc_index == m->mem_inst->loaded_count){
+						m->pc->pc_index = 0;
+				 }
+				run_step(m);
+            break;
             }
             case 12: {
                 if (!m->has_executed) {
