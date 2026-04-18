@@ -157,8 +157,11 @@ Abaixo estão descritas as instruções suportadas pela arquitetura, em seu form
 
 ### Compilação e execução
 
-**O Hector precisa fazer o makefile pra terminar essa parte do readme :D**
-
+``` 
+make        #compila simulador
+make run    #roda simulador
+make clean  #limpa arquivos antigos de build
+```
 ### Uso do simulador
 
 Após compilar e executar, as opções disponíveis no menu do simulador são: 
