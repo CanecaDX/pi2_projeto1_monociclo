@@ -37,7 +37,8 @@ pi2_projeto1_monociclo/
 ├── Makefile            
 ├── main.c                      #arquivo principal
 ├── memoria1.dat                #arquivo default para memória de dados
-├── memoria1.mem                #arquivo default para a memória instruções
+├── memoria1.mem                #arquivo 1 default para a memória de instruções (testa todas as intruções)
+├── memoria1_2.mem              #arquivo 2 default para a memória de instruções (testa somas e somas imediatas)
 └── README.md
 ```
 ---
