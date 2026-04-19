@@ -182,7 +182,7 @@ Após compilar e executar, as opções disponíveis no menu do simulador são:
 12_ Voltar 1 instrução
 13_ Exibir estatísticas
 ```
-Para verificação e teste, o simulador pode ser testado utilizando a memória de instruções (`memoria1.mem`) e a memória de dados (`memoria1.dat`) já disponíveis neste repositório.
+Para verificação e teste, o simulador pode ser testado utilizando a memória de instruções (`memoria1.mem` ou `memoria1_2.mem`) e a memória de dados (`memoria1.dat`) já disponíveis neste repositório.
 Recomenda-se primeiramente carregar a memória de instruções. O arquivo de memória de instruções deve seguir o formato `.mem`, contendo uma instrução por linha, podendo ser em formato hexadecimal ou binário. A forma de construção das instruções está descrita na seção [Arquitetura MiniMIPS](#arquitetura-minimips).
 
 ### Memória de Instruções (`.mem`)
