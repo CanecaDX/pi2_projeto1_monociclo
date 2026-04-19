@@ -99,7 +99,7 @@ static int get_mem_file(const char *mem_name, Instrucao *instructions, int *size
     fclose(file);
     return 0;
 }
-
+ 
 Memoria_instrucao *instruction_memory_load_file(const char *mem_name){
     Memoria_instrucao *mem = instruction_memory_create();
     if (!mem) return NULL;

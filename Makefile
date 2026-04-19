@@ -14,7 +14,7 @@ SRCS := mars_main.c \
 	src/monociclo.c \
 	src/pc.c \
 	src/registers.c \
-	src/ULA.c
+	src/ula.c
 
 OBJS := $(SRCS:.c=.o)
 
