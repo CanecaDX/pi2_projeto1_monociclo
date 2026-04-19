@@ -184,11 +184,11 @@ Após compilar e executar, as opções disponíveis no menu do simulador são:
 13_ Exibir estatísticas
 ```
 Para verificação e teste, o simulador pode ser testado utilizando a memória de instruções (`memoria1.mem` ou `memoria1_2.mem`) e a memória de dados (`memoria1.dat`) já disponíveis neste repositório.
-Recomenda-se primeiramente carregar a memória de instruções. O arquivo de memória de instruções deve seguir o formato `.mem`, contendo uma instrução por linha, podendo ser em formato hexadecimal ou binário. A forma de construção das instruções está descrita na seção [Arquitetura MiniMIPS](#arquitetura-minimips).
+Recomenda-se primeiramente carregar a memória de instruções. 
 
 ### Memória de Instruções (`.mem`)
 
-O arquivo `.mem` deve conter uma instrução por linha e devem podem estar em formato binário ou hexadecimal. A capacidade total da memória de instruções é de 256 instruções.
+O arquivo `.mem` deve conter uma instrução por linha podem estar em formato binário ou hexadecimal. A capacidade total da memória de instruções é de 256 instruções. A forma de construção das instruções está descrita na seção [Arquitetura MiniMIPS](#arquitetura-minimips).
 
 Exemplo em binário:
 
@@ -208,7 +208,7 @@ Exemplo em hexadecimal:
 
 ### Memória de Dados (`.dat`)
 
-Também é possível carregar a memória de dados no formato `.dat`, seguindo a convenção de um valor inteiro, em formato decimal, por linha. A memória de dados também possui capacidade para armazenar 265 dados. A arquitetura considera complemento de dois, então dados maiores que 127 ou menores que -128 serão ignorados.
+Também é possível carregar a memória de dados no formato `.dat`, seguindo a convenção de um valor inteiro, em formato decimal, por linha. A memória de dados também possui capacidade para armazenar 256 dados. A arquitetura considera complemento de dois, então dados maiores que 127 ou menores que -128 serão ignorados.
 
 Exemplo:
 
