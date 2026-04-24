@@ -19,7 +19,7 @@ O projeto consiste no desenvolvimento de um **simulador em linguagem C** para a 
 
 * Sara Vitória Henssler - saravitoriahenssler@gmail.com
 * Leonardo Cunha Gazen Manzke - manzkeleonardo@gmail.com
-* Hector Bernardo de Quadros Arbiza -
+* Hector Bernardo de Quadros Arbiza - hectorarbiza.aluno@unipampa.edu.br
 
 **Disciplina:** Projeto Integrador II
 **Curso:** Engenharia de Computação
