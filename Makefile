@@ -3,7 +3,7 @@ APP := mars_c
 
 CC ?= gcc
 
-CFLAGS ?= -Wall -Wextra -O2 -Iinclude
+CFLAGS ?= -Wall -Wextra -g -O2 -Iinclude
 
 SRCS := mars_main.c \
 	src/controle.c \

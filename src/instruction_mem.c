@@ -297,11 +297,17 @@ void exibeTodos_asm(Memoria_instrucao *mem){
 
 void exibeEst(Memoria_instrucao *mem){
 	
-	int r = 0, im = 0, j = 0, mem_d = 0;
+	//tipos
+	int r = 0, im = 0, j = 0;
+	
+	//classes
+	int mem_d = 0, desC = 0, arit = 0;
+	
 	int count = mem ? mem->loaded_count : 0;
 	
 	printf("\n");
-	printf("%d instruções carregadas: ", count);
+	printf("%d instruções carregadas", count);
+	printf("\n");
 	
 	for (int i = 0; i < count; i++) {
         Instrucao est = mem->instrucao[i];
@@ -317,15 +323,25 @@ void exibeEst(Memoria_instrucao *mem){
 		
 		if(d.type == TYPE_I && (d.opcode == 0xB || d.opcode == 0xF))
 			mem_d++;
+			
+		if(d.type == TYPE_I && d.opcode == 0x8)
+			desC++;
+			
+		if((d.type == TYPE_R || d.type == TYPE_I) && (d.opcode != 0x8 && d.opcode  && 0xB && d.opcode != 0xF))
+			arit++;
     }
-    
+    printf("\nTIPOS");
     printf("\n%d instruções do tipo R", r);
     printf("\n%d instruções do tipo I", im);
     printf("\n%d instruções do tipo J", j);
+    
     printf("\n");
-    printf("\nSerão feitos %d acessos/inserções no banco de registradores", r + im);
-    printf("\nSerão feitos %d operações envolvendo valores imediatos", j + im);
-    printf("\nSerão feitos %d acesos/inserções na memória de dados", mem_d);
+    
+    printf("\nCLASSES");
+    printf("\n%d operações de lógica e aritimética;", arit);
+    printf("\n%d operações de desvio incodicional;", j);
+    printf("\n%d operações de desvio condicional;", desC);
+    printf("\n%d operações de transferência de dados.", mem_d);
     
     return;
 }
